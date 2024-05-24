@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>محول النصوص</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <style>
+
+body {
+  background: linear-gradient(120deg, #417a48, #235357);
+}
+
+
+
+
+
+.fancy-btn {
+  background-color: #4caf50;
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  transition-duration: 0.4s;
+  cursor: pointer;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(19, 19, 201, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.fancy-btn:hover {
+  background-color: #45a049;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(50, 50, 93, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+
+
+    .btn {
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
+    }
+
+    .blue-btn {
+      background-color: #3490dc;
+    }
+
+    .green-btn {
+      background-color: #38a169;
+    }
+
+    .yellow-btn {
+      background-color: #f6e05e;
+    }
+
+    .pink-btn {
+      background-color: #f66d9b;
+    }
+
+    .purple-btn {
+      background-color: #805ad5;
+    }
+
+    .indigo-btn {
+      background-color: #4a5568;
+    }
+
+    .red-btn {
+      background-color: #e53e3e;
+    }
+
+    .gray-btn {
+      background-color: #718096;
+    }
+
+    .teal-btn {
+      background-color: #4dc0b5;
+    }
+
+    .cyan-btn {
+      background-color: #48bb78;
+    }
+
+    .orange-btn {
+      background-color: #ed8936;
+    }
+
+    .modal {
+      display: none; 
+      position: fixed; 
+      z-index: 1; 
+      left: 0;
+      top: 0;
+      width: 100%; 
+      height: 100%; 
+      overflow: auto; 
+      background-color: rgba(0,0,0,0.4); 
+      padding-top: 60px;
+    }
+
+    .modal-content {
+      background-color: #fefefe;
+      margin: 5% auto; 
+      padding: 20px;
+      border: 1px solid #888;
+      width: 80%;
+      border-radius: 5px;
+      box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
+    }
+
+    .close {
+      color: #aaa;
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+    }
+
+    .close:hover,
+    .close:focus {
+      color: black;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .rotate-scale-up {
+      animation: rotate-scale-up 1s ease-in-out both;
+    }
+
+    @keyframes rotate-scale-up {
+      0% {
+        transform: rotate(0) scale(1);
+        opacity: 1;
+      }
+      100% {
+        transform: rotate(360deg) scale(1.2);
+        opacity: 0;
+      }
+    }
+
+    .bounce-in-top {
+      animation: bounce-in-top 1s ease-in-out both;
+    }
+
+    @keyframes bounce-in-top {
+      0% {
+        transform: translateY(-500px);
+        animation-timing-function: ease-in;
+        opacity: 0;
+      }
+      38% {
+        transform: translateY(0);
+        animation-timing-function: ease-out;
+        opacity: 1;
+      }
+      55% {
+        transform: translateY(-65px);
+        animation-timing-function: ease-in;
+      }
+      72% {
+        transform: translateY(0);
+        animation-timing-function: ease-out;
+      }
+      81% {
+        transform: translateY(-28px);
+        animation-timing-function: ease-in;
+      }
+      90% {
+        transform: translateY(0);
+        animation-timing-function: ease-out;
+      }
+      95% {
+        transform: translateY(-8px);
+        animation-timing-function: ease-in;
+      }
+      100% {
+        transform: translateY(0);
+        animation-timing-function: ease-out;
+      }
+    }
+  </style>
+</head>
+<body class="bg-gray-100">
+  <audio class="audio-btn" id="clickSound" src="https://www.soundjay.com/button/beep-07.wav" preload="auto"></audio>
+  
+  <!-- Login Modal -->
+  <div id="loginModal" class="modal">
+    <div class="modal-content bg-white">
+      <span class="close" onclick="closeModal()">&times;</span>
+      <h2 class="text-2xl mb-4 text-center">تسجيل الدخول</h2>
+      <form class="w-full max-w-sm mx-auto">
+        <div class="mb-4">
+          <label for="username" class="block text-gray-700 text-sm font-bold mb-2">اسم المستخدم:</label>
+          <input type="text" id="username" class="w-full px-3 py-2 border border-gray-300 rounded-md" placeholder="ادخل اسم المستخدم...">
+        </div>
+        <div class="mb-6">
+          <label for="password" class="block text-gray-700 text-sm font-bold mb-2">كلمة المرور:</label>
+          <input type="password" id="password" class="w-full px-3 py-2 border border-gray-300 rounded-md" placeholder="ادخل كلمة المرور...">
+        </div>
+        <div class="flex justify-center">
+          <button type="button" onclick="login()" class="btn blue-btn hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">تسجيل الدخول</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+
+
+  
+
+  
+
+
+  <div class="container mx-auto py-8">
+    <h1 class="text-3xl mb-8 text-center">محول النصوص</h1>
+    <div class="input-field">
+      <textarea id="inputText" class="w-full h-32 border border-gray-300 rounded-md p-2" placeholder="ادخل النص هنا..."></textarea>
+      <div class="flex justify-center mt-4 space-x-4">
+        <button class="btn blue-btn hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onclick="convertToUpper()">تحويل إلى أحرف كبيرة</button>
+        <button class="btn green-btn hover:bg-green-700 text-white font-bold py-2 px-4 rounded" onclick="convertToLower()">تحويل إلى أحرف صغيرة</button>
+        <button class="btn yellow-btn hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded" onclick="reverseCase()">عكس الحالة</button>
+        <button class="btn pink-btn hover:bg-pink-700 text-white font-bold py-2 px-4 rounded" onclick="toggleCase()">تبديل الحالة</button>
+        <button class="btn purple-btn hover:bg-purple-700 text-white font-bold py-2 px-4 rounded" onclick="convertToTitleCase()">تحويل إلى حالة العنوان</button>
+        <button class="btn indigo-btn hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded" onclick="convertToEmojis()">تحويل إلى الرموز</button>
+        <button class="btn red-btn hover:bg-red-700 text-white font-bold py-2 px-4 rounded" onclick="convertToArabic()">تحويل إلى العربية</button>
+        <button class="btn gray-btn hover:bg-gray-700 text-white font-bold py-2 px-4 rounded" onclick="removeExtraSpaces()">إزالة الفراغات الزائدة</button>
+        <button class="btn teal-btn hover:bg-teal-700 text-white font-bold py-2 px-4 rounded" onclick="translateToEnglish()">ترجمة إلى الإنجليزية</button>
+        <button class="btn cyan-btn hover:bg-cyan-700 text-white font-bold py-2 px-4 rounded" onclick="translateToArabic()">ترجمة إلى العربية</button>
+        <button class="btn orange-btn hover:bg-orange-700 text-white font-bold py-2 px-4 rounded" onclick="copyToClipboard()">نسخ إلى الحافظة</button>
+        <button class="btn yellow-btn hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded" onclick="clearText()">مسح النص</button>
+      </div>
+      <textarea id="outputText" class="w-full h-32 border border-gray-300 rounded-md p-2 mt-4" placeholder="النص المحول..." readonly></textarea>
+    </div>
+    <div class="mt-4">
+      <h2 class="text-xl mb-2 font-semibold">مزايا المحول:</h2>
+      <ul class="list-disc list-inside">
+        <li>تحويل النص بدقة عالية وسرعة فائقة.</li>
+        <li>توفير ترجمة فورية وممتازة بين العربية والإنجليزية.</li>
+        <li>تحويل النص إلى رموز (Emojis) بناءً على المعاني.</li>
+      </ul>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/howler@2.2.0/dist/howler.min.js"></script>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script>
+    var isLoggedIn = false;
+
+    function convertToUpper() {
+      var inputText = document.getElementById("inputText").value;
+      var outputText = inputText.toUpperCase();
+      document.getElementById("outputText").value = outputText;
+      playClickSound();
+    }
+
+    var sound = new Howl({
+  src: ['click.mp3']
+});
+
+function playClickSound() {
+  sound.play();
+}
+
+
+
+
+
+    function convertToLower() {
+      var inputText = document.getElementById("inputText").value;
+      var outputText = inputText.toLowerCase();
+      document.getElementById("outputText").value = outputText;
+      playClickSound();
+    }
+
+    function reverseCase() {
+      var inputText = document.getElementById("inputText").value;
+      var outputText = "";
+      
+      for (var i = 0; i < inputText.length; i++) {
+        var char = inputText.charAt(i);
+
+        if (char === char.toUpperCase()) {
+          outputText += char.toLowerCase();
+        } else {
+          outputText += char.toUpperCase();
+        }
+      }
+      
+      document.getElementById("outputText").value = outputText;
+      playClickSound();
+    }
+
+    function toggleCase() {
+      var inputText = document.getElementById("inputText").value;
+      var outputText = "";
+      
+      for (var i = 0; i < inputText.length; i++) {
+        var char = inputText.charAt(i);
+
+        if (char === char.toUpperCase()) {
+          outputText += char.toLowerCase();
+        } else {
+          outputText += char.toUpperCase();
+        }
+      }
+      
+      document.getElementById("outputText").value = outputText;
+      playClickSound();
+    }
+
+    function convertToTitleCase() {
+      var inputText = document.getElementById("inputText").value;
+      var outputText = inputText.toLowerCase().replace(/\b\w/g, function(char) {
+        return char.toUpperCase();
+      });
+      document.getElementById("outputText").value = outputText;
+      playClickSound();
+    }
+
+    function convertToEmojis() {
+      var inputText = document.getElementById("inputText").value;
+      var outputText = inputText
+                        .replace(/ي/g, "🌙")
+                        .replace(/ا/g, "🚀")
+                        .replace(/ب/g, "🌹")
+                        .replace(/ت/g, "🍵")
+                        .replace(/ث/g, "🦷")
+                        .replace(/ج/g, "🪐")
+                        .replace(/ح/g, "🔥")
+                        .replace(/خ/g, "🌄")
+                        .replace(/د/g, "🌻")
+                        .replace(/ذ/g, "🍯")
+                        .replace(/ر/g, "🌈")
+                        .replace(/ز/g, "🦋")
+                        .replace(/س/g, "🌊")
+                        .replace(/ش/g, "🏔️")
+                        .replace(/ص/g, "🌄")
+                        .replace(/ض/g, "🔈")
+                        .replace(/ط/g, "🛫")
+                        .replace(/ظ/g, "🦚")
+                        .replace(/ع/g, "🌌")
+                        .replace(/غ/g, "👾")
+                        .replace(/ف/g, "🍟")
+                        .replace(/ق/g, "🎈")
+                        .replace(/ك/g, "🔑")
+                        .replace(/ل/g, "📚")
+                        .replace(/م/g, "🎤")
+                        .replace(/ن/g, "📢")
+                        .replace(/ه/g, "💡")
+                        .replace(/و/g, "🌕")
+                        .replace(/هـ/g, "🌪️")
+                        .replace(/ي/g, "🎉")
+                        .replace(/كس/g, "💩")
+                        .replace(/y/g, "🍟")
+                        .replace(/z/g, "🎸");
+      document.getElementById("outputText").value = outputText;
+      playClickSound();
+    }
+
+    function convertToArabic() {
+      var inputText = document.getElementById("inputText").value;
+      var outputText = inputText.toLowerCase()
+                        .replace(/x/g, "كس")
+                        .replace(/y/g, "ي")
+                        .replace(/z/g, "ز");
+      document.getElementById("outputText").value = outputText;
+      playClickSound();
+    }
+
+    function removeExtraSpaces() {
+      var inputText = document.getElementById("inputText").value;
+      var outputText = inputText.replace(/\s+/g, ' ').trim();
+      document.getElementById("outputText").value = outputText;
+      playClickSound();
+    }
+
+    function translateToEnglish() {
+      var inputText = document.getElementById("inputText").value;
+      translate(inputText, 'ar', 'en');
+    }
+
+    function translateToArabic() {
+      var inputText = document.getElementById("inputText").value;
+      translate(inputText, 'en', 'ar');
+    }
+
+    function translate(text, sourceLang, targetLang) {
+      var url = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=${sourceLang}&tl=${targetLang}&dt=t&q=${text}`;
+      
+      axios.get(url)
+        .then(function (response) {
+          var translatedText = response.data[0][0][0];
+          document.getElementById("outputText").value = translatedText;
+          playClickSound();
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    }
+
+    function copyToClipboard() {
+      var copyText = document.getElementById("outputText");
+      copyText.select();
+      copyText.setSelectionRange(0, 99999);
+      document.execCommand("copy");
+      alert("تم نسخ النص إلى الحافظة: " + copyText.value);
+      playClickSound();
+    }
+
+    function clearText() {
+      document.getElementById("inputText").value = "";
+      document.getElementById("outputText").value = "";
+      playClickSound();
+    }
+
+    function playClickSound() {
+      var sound = document.getElementById("clickSound");
+      sound.play();
+    }
+
+    function openModal() {
+      var modal = document.getElementById("loginModal");
+      modal.classList.add("bounce-in-top");
+      modal.style.display = "block";
+    }
+
+    function closeModal() {
+      var modal = document.getElementById("loginModal");
+      modal.style.display = "none";
+    }
+
+    function login() {
+      var username = document.getElementById("username").value;
+      var password = document.getElementById("password").value;
+      
+      if (username === "user" && password === "123") {
+        alert("تم تسجيل الدخول بنجاح!");
+        isLoggedIn = true;
+        toggleLoginButton();
+        closeModal();
+      } else {
+        alert("اسم المستخدم أو كلمة المرور غير صحيحة!");
+      }
+    }
+
+    function logout() {
+      isLoggedIn = false;
+      toggleLoginButton();
+    }
+
+    function toggleLoginButton() {
+      var loginButton = document.getElementById("loginButton");
+      var logoutButton = document.getElementById("logoutButton");
+
+      if (isLoggedIn) {
+        loginButton.classList.add("hidden");
+        logoutButton.classList.remove("hidden");
+      } else {
+        loginButton.classList.remove("hidden");
+        logoutButton.classList.add("hidden");
+      }
+    }
+  </script>
+</body>
+</html>
